@@ -1,0 +1,88 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'trollop'
+require 'rubypack'
+
+SUB_COMMANDS = %w(build deploy list)
+global_opts = Trollop::options do
+  banner "RubyPack #{Rubypack::VERSION} (c) 2017 Jorge del Rio\n" \
+         "A ruby package generation and execution manager.\n\n" \
+         "Commands:\n" \
+         "  build    Create a new package.\n" \
+         "  deploy   Install the application package and all the gems.\n" \
+         "  list     List the files to be included in the package.\n\n" \
+         "Options:\n"
+  stop_on SUB_COMMANDS
+end
+
+cmd = ARGV.shift
+cmd_opts = case cmd
+  when 'build'
+    Trollop::options do
+      banner "build - Builds a package of your application.\n\n" \
+             "Options:\n"
+      opt :config,
+          'The config file to use',
+          type: :string,
+          default: Rubypack::RubypackFile::DEFAULT_FILENAME
+      opt :output_directory,
+          'The directory where the final package is going to be created.',
+          type: :string,
+          default: '.'
+      opt :compressor,
+          'The compressor utility to use. Possible values: tgz, zip.',
+          type: :string,
+          default: 'tgz'
+      opt :no_overwrite,
+          'Do not overwrite the output file if it already exists.'
+      opt :verbose, 
+          'Verbose output for debugging.'
+      opt :quiet, 
+          'Do not output anything.'
+    end
+  when 'deploy'
+    Trollop::options do
+      banner "deploy - Install the application package and all the gems.\n\n" \
+             "Options:\n"
+      opt :filename,
+          'The file deploy',
+          type: :string,
+          required: true
+      opt :directory,
+          'The directory where the final package is going to be deployed.',
+          type: :string,
+          required: true
+      opt :verbose, 
+          'Verbose output for debugging.'
+      opt :compressor,
+          'The compressor utility to use. Possible values: tgz, zip.',
+          type: :string
+    end
+  when 'list'
+    Trollop::options do
+      banner "list - List the files to be included in the package.\n\n" \
+             "Options:\n"
+      opt :config,
+          'The config file to use',
+          type: :string,
+          default: Rubypack::RubypackFile::DEFAULT_FILENAME
+      opt :verbose, 
+          'Verbose output for debugging.'
+    end
+  else
+    Trollop::die "unknown subcommand"
+  end
+
+success = case cmd
+          when 'build'
+            builder = Rubypack::Builder.new(cmd_opts)
+            builder.build!
+          when 'deploy'
+            deployer = Rubypack::Deployer.new(cmd_opts)
+            deployer.deploy!
+          when 'list'
+            listing = Rubypack::Listing.new(cmd_opts)
+            listing.list!
+          end
+exit(success ? 0 : 1)

@@ -1,0 +1,8 @@
+require 'rubypack/version'
+require_relative 'rubypack/shell_output'
+require_relative 'rubypack/rubypack_file'
+require_relative 'rubypack/builder'
+require_relative 'rubypack/deployer'
+require_relative 'rubypack/listing'
+require_relative 'rubypack/compressor'
+require_relative 'rubypack/bundler_controller'
