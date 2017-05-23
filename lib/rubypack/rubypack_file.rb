@@ -14,7 +14,7 @@ module Rubypack
     end
 
     def read!
-      instance_exec { eval(File.read(@filename)) }
+      instance_exec { eval(File.read(File.join(@path, @filename))) }
     end
 
     def name(name)

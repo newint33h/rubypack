@@ -26,7 +26,7 @@ module Rubypack
       return false unless files
 
       Dir.mktmpdir do |output_directory|
-        copy_files(files, output_directory)
+        copy_files(pack, files, output_directory)
         create_package(pack, output_directory)
       end
 
@@ -66,7 +66,7 @@ module Rubypack
       end
     end
 
-    def copy_files(files, output_directory)
+    def copy_files(pack, files, output_directory)
       @output.step('Creating copy of files...') do
         @output.verbose(' Temporal path:', output_directory)
         FileUtils.mkdir_p(output_directory)
@@ -75,7 +75,7 @@ module Rubypack
           directory = File.dirname(new_file)
           FileUtils.mkdir_p(directory) unless Dir.exists?(directory)
           @output.verbose(' =', file)
-          FileUtils.copy_entry(file, new_file)
+          FileUtils.copy_entry(File.join(pack.path, file), new_file)
         end
       end
     end
