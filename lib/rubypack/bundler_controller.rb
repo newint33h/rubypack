@@ -9,7 +9,7 @@ module Rubypack
       begin
         old_pwd = Dir.pwd
         Dir.chdir(@path)
-        IO.popen(['bundle', 'package', '--all-platforms', err: [:child, :out]]) do |out|
+        IO.popen(['bundle', 'package', '--all-platforms', '--all', err: [:child, :out]]) do |out|
           yield(out)
         end
         fail("bundle package failed: #{$?.exitstatus}") unless $?.exitstatus == 0
