@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'trollop'
-require 'rubypack'
+Dir.chdir(File.dirname(__FILE__)) do
+  require 'bundler/setup'
+  require 'trollop'
+  require 'rubypack'
+end
 
 SUB_COMMANDS = %w(build deploy list)
 global_opts = Trollop::options do
