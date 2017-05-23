@@ -3,7 +3,7 @@ module Rubypack
   class RubypackFile
     DEFAULT_FILENAME = '.rubypack'
 
-    attr_accessor :path
+    attr_accessor :path, :filename
 
     def initialize(filename:, output:)
       fail("File not found: #{filename}") unless File.exists?(filename)
