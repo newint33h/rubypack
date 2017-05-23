@@ -9,8 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Jorge del Rio']
   spec.email         = ['jorge.delrio@kueski.com']
 
-  spec.summary       = %q{Gem to build and run packages of your application}
-  spec.description   = %q{UNDER DEVELOPMENT, DO NOT USE. This gem provides some utilities to build a package of your application with aims to provide a runnable standalone application that can be shared}
+  spec.summary       = 'Gem to build and deploy packages of your application'
+  spec.description   = 'This gem provides some utilities to build a package of your application' +
+                       ' with aims to provide a runnable standalone application that can be shared' +
+                       ' or deployed in production systems.'
   spec.homepage      = 'https://github.com/newint33h/rubypack.git'
   spec.license       = 'MIT'
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
