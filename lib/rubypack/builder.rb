@@ -59,6 +59,7 @@ module Rubypack
     def generate_list_of_files(pack)
       @output.step('Generating list of files...') do
         pack.include(pack.filename)
+        pack.include('Gemfile')
         pack.include('Gemfile.lock')
         pack.include('vendor/cache/*')
         all_files = pack.list_files
