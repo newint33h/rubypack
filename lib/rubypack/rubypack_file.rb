@@ -31,10 +31,6 @@ module Rubypack
       "#{@name}-#{@version}"
     end
 
-    def run(command)
-      @command = command
-    end
-
     def include(*args)
       @rules = [] unless defined?(@rules)
       args.each { |entry| @rules << { action: :include, filter: entry } }
