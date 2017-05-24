@@ -22,14 +22,18 @@ Or install it yourself as:
 
 To build a package of your application, you need to define a new file named `.rubypack` on the root directory of your application.
 
-The content of the .rubypack file:
+The content of the `.rubypack` file:
+
 ```ruby
 name 'TestApp'
 version '3.1'
 
+include git
 exclude '*.log'
 include 'js/node_modules/**/**'
 ```
+
+Please note that if the first filter among include/exclude is *include*, then the strategy to select the files will start with zero files and continue applying the filters in order appearance. However if the first filter is *exclude*, the selection of files will start with ALL files and continue applying the reamining of the filters.
 
 Then run the following command to build your package:
 
@@ -73,7 +77,7 @@ To view more details about what is happening, you can use the `--verbose` switch
 
 ### Available commands
 
-```bash
+```
 $ rubypack --help
 RubyPack 0.1.0 (c) 2017 Jorge del Rio
 A ruby package generation and execution manager.
@@ -89,7 +93,7 @@ Options:
 
 ### Build command
 
-```bash
+```
 $ rubypack build --help
 build - Builds a package of your application.
 
@@ -105,7 +109,7 @@ Options:
 
 ### Deploy command
 
-```bash
+```
 $ rubypack deploy --help
 deploy - Install the application package and all the gems.
 
@@ -129,6 +133,56 @@ Options:
   -h, --help          Show this message
 ```
 
+## Configuration file
+
+The configuration file `.rubypack` is used to determinate which will be included in the final package file.
+
+The *name* and *version* methods are used to define the final name of the package. For example: `MyApp-1.2.0.tgz.rpack`
+
+```ruby
+name 'MyApp'
+version '1.2.0'
+```
+
+You can rubypack configuration is a ruby file than can contain any code. Therefore, you can set the version using the definition in another file.
+
+```
+require 'version.rb'
+
+name 'MyApp'
+version MyApp::VERSION
+```
+
+The *git* keyword fetches all the files in the repository using the following command: `` `git ls-files -z\`.split("\x0") ``
+
+```ruby
+include git
+```
+
+The *all* keyword fetches all the files using the wildcards `**/**`.
+
+```ruby
+include all
+```
+
+To include a specific file, simple write the relative URL to the file.
+
+```
+include 'Myfile.txt'
+```
+
+It is possible to include several filters in the same line.
+
+```
+include git, 'js/node_modules', 'public/**/**'
+```
+
+The order of the include/exclude instructions matters. The filters are applied in order of appearance. For example, to select only the files not tracked by git:
+
+```
+include all
+exclude git
+```
 
 ## Development
 
