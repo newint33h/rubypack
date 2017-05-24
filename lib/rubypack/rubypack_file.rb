@@ -52,8 +52,7 @@ module Rubypack
     end
 
     def list_files
-      old_pwd = Dir.pwd
-      Dir.chdir(@path)
+      Dir.chdir(@path) do
 
       # If not rules were defined, include all by default
       unless defined?(@rules)
@@ -93,8 +92,7 @@ module Rubypack
 
       # Sort the file names
       files.sort
-    ensure
-      Dir.chdir(old_pwd)
+      end
     end
 
   end

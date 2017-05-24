@@ -26,15 +26,13 @@ module Rubypack
 
       begin
         filename = File.expand_path(output_filename + @compressor.extension)
-        old_pwd = Dir.pwd
-        Dir.chdir(path)
-        @compressor.compress(filename: filename) do |out|
-          while line = out.gets do
-            @output.verbose(' >', line)
+        Dir.chdir(path) do
+          @compressor.compress(filename: filename) do |out|
+            while line = out.gets do
+              @output.verbose(' >', line)
+            end
           end
         end
-      ensure
-        Dir.chdir(old_pwd)
       end
 
       @output.status(' File created: ', filename)
@@ -51,15 +49,13 @@ module Rubypack
 
       begin
         full_filename = File.expand_path(filename)
-        old_pwd = Dir.pwd
-        Dir.chdir(directory)
-        @compressor.decompress(filename: full_filename) do |out|
-          while line = out.gets do
-            @output.verbose(' >', line)
+        Dir.chdir(directory) do
+          @compressor.decompress(filename: full_filename) do |out|
+            while line = out.gets do
+              @output.verbose(' >', line)
+            end
           end
         end
-      ensure
-        Dir.chdir(old_pwd)
       end
 
       @output.status(' Directory created: ', directory)
