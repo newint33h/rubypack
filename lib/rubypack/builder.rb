@@ -33,7 +33,7 @@ module Rubypack
       true
     rescue => exception
       @output.error(exception.message)
-      verbose(exception.backtrace.join("\n"))
+      @output.verbose(exception.backtrace.join("\n"))
       false
     end
 
